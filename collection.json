@@ -1,0 +1,3294 @@
+{
+	"info": {
+		"_postman_id": "5f2c2577-a2ef-4270-8ccb-4d8fb0f78d58",
+		"name": "SATURNO REST API - Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21751470",
+		"_collection_link": "https://cartco-dev.postman.co/workspace/CARTCO~d57c046e-0d87-4aa5-86b9-4387df8e67be/collection/21751470-5f2c2577-a2ef-4270-8ccb-4d8fb0f78d58?action=share&source=collection_link&creator=21751470"
+	},
+	"item": [
+		{
+			"name": "Autenticação",
+			"item": [
+				{
+					"name": "Autenticar usuário",
+					"item": [
+						{
+							"name": "Autenticar usuário",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Autenticar usuário\", function () {",
+											"    pm.response.to.be.json;",
+											"",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    pm.expect(responseBody).to.have.property('token');",
+											"    pm.expect(responseBody.token).to.be.a('string');",
+											"",
+											"    const response = pm.response.json();",
+											"    pm.environment.set(\"TOKEN\", response.token);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"clientId\": \"{{CLIENT_ID}}\",\n    \"clientSecret\": \"{{CLIENT_SECRET}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/v1/auth/login",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"v1",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Autenticar usuário - Cenário de Falha #1",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Autenticar usuário - Cenário de Falha #1 - Falta envio de campos\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    pm.expect(responseBody).to.have.property('message');",
+											"    pm.expect(responseBody.message).to.be.an('array');",
+											"    pm.expect(responseBody.message).to.contain(\"Você deve informar o seu clientId\");",
+											"    pm.expect(responseBody.message).to.contain(\"Você deve informar o seu clientSecret\");",
+											"",
+											"    pm.expect(responseBody).to.have.property('statusCode');",
+											"    pm.expect(responseBody.statusCode).to.be.a('number');",
+											"    pm.expect(responseBody.statusCode).to.equal(400);",
+											"",
+											"    pm.expect(responseBody).to.have.property('path');",
+											"    pm.expect(responseBody.path).to.be.a('string');",
+											"    pm.expect(responseBody.path).to.equal(\"/v1/auth/login\");",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"clientIdsXXX\": \"XXXX\",\n    \"clientSecretsXXX\": \"XXXX\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/v1/auth/login",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"v1",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Autenticar usuário - Cenário de Falha #2",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Autenticar usuário - Cenário de Falha #2- Dados inválidos\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    pm.expect(responseBody).to.have.property('message');",
+											"    pm.expect(responseBody.message).to.be.an('array');",
+											"    pm.expect(responseBody.message).to.contain(\"Autenticação inválida\");",
+											"",
+											"    pm.expect(responseBody).to.have.property('statusCode');",
+											"    pm.expect(responseBody.statusCode).to.be.a('number');",
+											"    pm.expect(responseBody.statusCode).to.equal(400);",
+											"",
+											"    pm.expect(responseBody).to.have.property('path');",
+											"    pm.expect(responseBody.path).to.be.a('string');",
+											"    pm.expect(responseBody.path).to.equal(\"/v1/auth/login\");",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"clientId\": \"xxxxx\",\n    \"clientSecret\": \"xxxxx\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/v1/auth/login",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"v1",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Atualizar o token da aplicação",
+					"item": [
+						{
+							"name": "Atualizar o token da aplicação",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Atualizar o token da aplicação\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    pm.expect(responseBody).to.have.property('newToken');",
+											"    pm.expect(responseBody.newToken).to.be.a('string');",
+											"",
+											"    pm.expect(responseBody).to.have.property('message');",
+											"    pm.expect(responseBody.message).to.be.a('string');",
+											"",
+											"    pm.expect(responseBody).to.have.property('isValidRequest');",
+											"    pm.expect(responseBody.isValidRequest).to.be.a('boolean');",
+											"    pm.expect(responseBody.isValidRequest).to.be.true;",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"token\": \"{{TOKEN}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/v1/auth/refresh-token",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"v1",
+										"auth",
+										"refresh-token"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Atualizar o token da aplicação - Cenário de Sucesso #1",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Atualizar o token da aplicação - Cenário de Sucesso #1 - O Token atual, permanece válido\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    pm.expect(responseBody).to.have.property('isValidRequest');",
+											"    pm.expect(responseBody.isValidRequest).to.be.a('boolean');",
+											"    pm.expect(responseBody.isValidRequest).to.be.true;",
+											"",
+											"    pm.expect(responseBody).to.have.property('newToken');",
+											"    pm.expect(responseBody.newToken).to.be.an('string');",
+											"",
+											"    pm.expect(responseBody).to.have.property('message');",
+											"    pm.expect(responseBody.message).to.be.a('string');",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"token\": \"{{TOKEN}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/v1/auth/refresh-token",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"v1",
+										"auth",
+										"refresh-token"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Atualizar o token da aplicação - Cenário de Falha #1",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Atualizar o token da aplicação - Cenário de Falha #1 - O Token atual, permanece válido\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    pm.expect(responseBody).to.have.property('isValidRequest');",
+											"    pm.expect(responseBody.isValidRequest).to.be.a('boolean');",
+											"    pm.expect(responseBody.isValidRequest).to.be.false;",
+											"",
+											"    pm.expect(responseBody).to.have.property('newToken');",
+											"    pm.expect(responseBody.newToken).to.be.an('string');",
+											"",
+											"    pm.expect(responseBody).to.have.property('message');",
+											"    pm.expect(responseBody.message).to.be.a('string');",
+											"    pm.expect(responseBody.message).to.equal(\"Token inválido\");",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"token\": \"{{TOKEN}}xxx\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/v1/auth/refresh-token",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"v1",
+										"auth",
+										"refresh-token"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Simulador",
+			"item": [
+				{
+					"name": "Simular taxas de pagamento",
+					"item": [
+						{
+							"name": "Simular taxas de pagamento",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Simular taxas de pagamento\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    pm.expect(responseBody).to.have.property('CREDIT_CARD');",
+											"    pm.expect(responseBody.CREDIT_CARD).to.be.an('array');",
+											"",
+											"    pm.expect(responseBody).to.have.property('PIX');",
+											"    pm.expect(responseBody.PIX).to.be.an('object'); ",
+											"",
+											"    pm.expect(responseBody).to.have.property('DEBIT');",
+											"    pm.expect(responseBody.DEBIT).to.be.an('object');",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{TOKEN}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"value\": 100,\n  \"typeOut\": \"PRICE\"\n}"
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/v1/simulator/consult-payment-fees",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"v1",
+										"simulator",
+										"consult-payment-fees"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Simular taxas de pagamento - Cenário de Falha #1",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Autenticar usuário - Cenário de Falha #1 - Falta envio de campos\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    pm.expect(responseBody).to.have.property('message');",
+											"    pm.expect(responseBody.message).to.be.an('array'); ",
+											"    ",
+											"    pm.expect(responseBody.message).to.contain(\"O valor para simulação deve ser positivo\");",
+											"    pm.expect(responseBody.message).to.contain(\"O valor para simulação deve ser maior que zero\");",
+											"    pm.expect(responseBody.message).to.contain(\"O valor para simulação deve ser um número inteiro e positivo\");",
+											"    pm.expect(responseBody.message).to.contain(\"Informe o valor para ser utilizado na simulação\");",
+											"    pm.expect(responseBody.message).to.contain(\"Deve ser informado o tipo de retorno desejado, em centavos ou em reais. | CENTS ou PRICE\");",
+											"        ",
+											"    pm.expect(responseBody).to.have.property('statusCode');",
+											"    pm.expect(responseBody.statusCode).to.be.a('number');",
+											"    pm.expect(responseBody.statusCode).to.equal(400);",
+											"",
+											"    pm.expect(responseBody).to.have.property('path');",
+											"    pm.expect(responseBody.path).to.be.a('string');",
+											"    pm.expect(responseBody.path).to.equal(\"/v1/simulator/consult-payment-fees\");",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"valueX\": 100,\n  \"typeOutX\": \"CENTS\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/v1/simulator/consult-payment-fees",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"v1",
+										"simulator",
+										"consult-payment-fees"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Simular taxas de pagamento - Cenário de Falha #2",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Autenticar usuário - Cenário de Falha #1 - Não deve permitir envio de valores negativos\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    pm.expect(responseBody).to.have.property('message');",
+											"    pm.expect(responseBody.message).to.be.an('array');",
+											"    pm.expect(responseBody.message).to.contain(\"O valor para simulação deve ser positivo\");",
+											"    pm.expect(responseBody.message).to.contain(\"O valor para simulação deve ser maior que zero\");",
+											"        ",
+											"    pm.expect(responseBody).to.have.property('statusCode');",
+											"    pm.expect(responseBody.statusCode).to.be.a('number');",
+											"    pm.expect(responseBody.statusCode).to.equal(400);",
+											"",
+											"    pm.expect(responseBody).to.have.property('path');",
+											"    pm.expect(responseBody.path).to.be.a('string');",
+											"    pm.expect(responseBody.path).to.equal(\"/v1/simulator/consult-payment-fees\");",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"value\": -100,\n  \"typeOut\": \"CENTS\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/v1/simulator/consult-payment-fees",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"v1",
+										"simulator",
+										"consult-payment-fees"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Simular taxas de pagamento - Cenário de Falha #3",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Autenticar usuário - Cenário de Falha #1 - Não deve permitir envio de valores negativos\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    pm.expect(responseBody).to.have.property('message');",
+											"    pm.expect(responseBody.message).to.be.an('array');",
+											"    pm.expect(responseBody.message).to.contain(\"O valor para simulação deve ser positivo\");",
+											"    pm.expect(responseBody.message).to.contain(\"O valor para simulação deve ser maior que zero\");",
+											"",
+											"    pm.expect(responseBody).to.have.property('statusCode');",
+											"    pm.expect(responseBody.statusCode).to.be.a('number');",
+											"    pm.expect(responseBody.statusCode).to.equal(400);",
+											"",
+											"    pm.expect(responseBody).to.have.property('path');",
+											"    pm.expect(responseBody.path).to.be.a('string');",
+											"    pm.expect(responseBody.path).to.equal(\"/v1/simulator/consult-payment-fees\");",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"value\": 0,\n  \"typeOut\": \"CENTS\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/v1/simulator/consult-payment-fees",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"v1",
+										"simulator",
+										"consult-payment-fees"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Link de Pagamentos",
+			"item": [
+				{
+					"name": "Criação de link de pagamentos",
+					"item": [
+						{
+							"name": "Criação de links de pagamentos",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Criação de links de pagamentos\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"    ",
+											"    pm.expect(responseBody).to.have.property('id');",
+											"    pm.expect(responseBody.id).to.be.a('string');",
+											"",
+											"    pm.expect(responseBody).to.have.property('valueLiquid');",
+											"    pm.expect(responseBody.valueLiquid).to.be.a('number');",
+											"",
+											"    pm.expect(responseBody).to.have.property('paymentUrl');",
+											"    pm.expect(responseBody.paymentUrl).to.be.a('string');",
+											"",
+											"    pm.expect(responseBody).to.have.property('status');",
+											"    pm.expect(responseBody.status).to.be.a('string');",
+											"",
+											"    pm.expect(responseBody).to.have.property('expirationDate');",
+											"    pm.expect(responseBody.expirationDate).to.be.a('string');",
+											"",
+											"    pm.environment.set(\"ID_PAYMENT_LINK\", responseBody.id);",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{TOKEN}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"valueLiquid\": 100,\n  \"expirationDate\": \"2024-12-20\",\n  \"orders\": [\n    {\n      \"orderIds\": [\n        \"1\",\n        \"2\",\n        \"3\",\n        \"4\",\n        \"5\"\n      ],\n      \"type\": \"RI\",\n      \"description\": \"Registro de imóveis\"\n    }\n  ]\n}"
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/v1/payment-link",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"v1",
+										"payment-link"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "10",
+											"disabled": true
+										},
+										{
+											"key": "page",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "orderField",
+											"value": "paymentLink.id",
+											"disabled": true
+										},
+										{
+											"key": "orderOrientation",
+											"value": "ASC",
+											"disabled": true
+										},
+										{
+											"key": "limit",
+											"value": "1",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Criação de link de pagamentos - Cenário de Falha #1",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Criação de link de pagamentos - Cenário de Falha #1- Dados inválidos\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    pm.expect(responseBody).to.have.property('message');",
+											"    pm.expect(responseBody.message).to.be.an('array');",
+											"",
+											"    pm.expect(responseBody).to.have.property('statusCode');",
+											"    pm.expect(responseBody.statusCode).to.be.a('number');",
+											"    pm.expect(responseBody.statusCode).to.equal(400);",
+											"",
+											"    pm.expect(responseBody).to.have.property('path');",
+											"    pm.expect(responseBody.path).to.be.a('string');",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{BASE_URL}}/v1/payment-link",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"v1",
+										"payment-link"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "10",
+											"disabled": true
+										},
+										{
+											"key": "page",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "orderField",
+											"value": "paymentLink.id",
+											"disabled": true
+										},
+										{
+											"key": "orderOrientation",
+											"value": "ASC",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Criação de link de pagamentos - Cenário de Falha #2",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Criação de link de pagamentos - Cenário de Falha #2- Dados inválidos - # Estrutura do Objecto responseBody\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    pm.expect(responseBody).to.have.property('message');",
+											"    pm.expect(responseBody.message).to.be.an('array'); ",
+											"",
+											"    pm.expect(responseBody).to.have.property('statusCode');",
+											"    pm.expect(responseBody.statusCode).to.be.a('number');",
+											"    pm.expect(responseBody.statusCode).to.equal(400);",
+											"",
+											"    pm.expect(responseBody).to.have.property('path');",
+											"    pm.expect(responseBody.path).to.be.a('string');",
+											"});",
+											"",
+											"pm.test(\"Criação de link de pagamentos - Cenário de Falha #3- Dados inválidos - #Validando caso houver os dados pedidos \", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json(); ",
+											"",
+											"    pm.expect(responseBody.message).to.be.contain(\"orders.0.Cada elemento do array deve ser uma string.\");",
+											"    pm.expect(responseBody.message).to.be.contain(\"orders.0.Cada pedido no array deve ser único.\");",
+											"    pm.expect(responseBody.message).to.be.contain(\"orders.0.Tipo de pedido deve ser em formato de string\");",
+											"    pm.expect(responseBody.message).to.be.contain(\"orders.0.Descrição do pedido deve ser em formato de string\");    ",
+											"",
+											"    pm.expect(responseBody.message).to.be.contain(\"orders.1.Cada elemento do array deve ser uma string.\");",
+											"    pm.expect(responseBody.message).to.be.contain(\"orders.1.Cada pedido no array deve ser único.\");",
+											"    pm.expect(responseBody.message).to.be.contain(\"orders.1.Informe um ou mais de pedidos em formato de array\");",
+											"    pm.expect(responseBody.message).to.be.contain(\"orders.1.Tipo de pedido deve ser em formato de string\");",
+											"    pm.expect(responseBody.message).to.be.contain(\"orders.1.Descrição do pedido deve ser em formato de string\");",
+											"});",
+											"",
+											"pm.test(\"Criação de link de pagamentos - Cenário de Falha #3- Dados inválidos - # Validando valores\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    pm.expect(responseBody.message).to.be.contain(\"O valor líquido deve ser em centavos\"); ",
+											"});",
+											"",
+											"pm.test(\"Criação de link de pagamentos - Cenário de Falha #3- Dados inválidos - # Validando data de expiração\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											" ",
+											"    pm.expect(responseBody.message).to.be.contain(\"Data de expiração inválida. Use o formato `2024-12-20`.\");",
+											"    pm.expect(responseBody.message).to.be.contain(\"Formato inválido da data de expiração. Use o formato `2024-12-20`.\");",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{TOKEN}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"valueLiquid\": \"1cent\",\r\n  \"expirationDate\": \"2,3-11-23 90:59:59\",\r\n  \"orders\": [\r\n    {\r\n      \"orderIds\": [\r\n        1,\r\n        \"2\",\r\n        \"2\"\r\n      ],\r\n      \"type\": 1,\r\n      \"description\": 1\r\n    },\r\n    {\r\n      \"orderIds\": 23,\r\n      \"type\": { \r\n          \"item\": \"texto genérico\"\r\n      },\r\n      \"description\": 1\r\n    }\r\n  ]\r\n}"
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/v1/payment-link",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"v1",
+										"payment-link"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "10",
+											"disabled": true
+										},
+										{
+											"key": "page",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "orderField",
+											"value": "paymentLink.id",
+											"disabled": true
+										},
+										{
+											"key": "orderOrientation",
+											"value": "ASC",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Listagem de links de pagamentos",
+					"item": [
+						{
+							"name": "Listagem de links de pagamentos - Cenário de Sucesso # Nenhuma query",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Listagem de links de pagamentos - # Nenhuma query - # Deve retornar object de paginação - pageInfo\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"    ",
+											"    pm.expect(responseBody).to.have.property('pageInfo');",
+											"    pm.expect(responseBody.pageInfo).to.be.an('object');",
+											"",
+											"    pm.expect(responseBody.pageInfo).to.have.property('totalPages');",
+											"    pm.expect(responseBody.pageInfo.totalPages).to.be.a('number');",
+											"",
+											"    pm.expect(responseBody.pageInfo).to.have.property('totalItems');",
+											"    pm.expect(responseBody.pageInfo.totalItems).to.be.a('number');",
+											"",
+											"    pm.expect(responseBody.pageInfo).to.have.property('itemsPerPage');",
+											"    pm.expect(responseBody.pageInfo.itemsPerPage).to.be.a('number');",
+											"    ",
+											"    pm.expect(responseBody.pageInfo).to.have.property('currentPage');",
+											"    pm.expect(responseBody.pageInfo.currentPage).to.be.a('number'); ",
+											"",
+											"    pm.expect(responseBody.pageInfo).to.have.property('hasPreviousPage');",
+											"    pm.expect(responseBody.pageInfo.hasPreviousPage).to.be.a('boolean'); ",
+											"",
+											"    pm.expect(responseBody.pageInfo).to.have.property('hasNextPage');",
+											"    pm.expect(responseBody.pageInfo.hasNextPage).to.be.a('boolean');",
+											"",
+											"});",
+											"",
+											"pm.test(\"Listagem de links de pagamentos - # Nenhuma query - # Deve retornar object de resultados - edges\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    pm.expect(responseBody).to.have.property('edges');",
+											"    pm.expect(responseBody.edges).to.be.an('array');",
+											"",
+											"    pm.expect(responseBody.edges[0]).to.have.property('cursor');",
+											"    pm.expect(responseBody.edges[0].cursor).to.be.a('string');",
+											"",
+											"    pm.expect(responseBody.edges[0]).to.have.property('node');",
+											"    pm.expect(responseBody.edges[0].node).to.be.an('object');",
+											"",
+											"});",
+											"",
+											"pm.test(\"Listagem de links de pagamentos - # Nenhuma query - # Deve setar como variável de ambiente ID_PAYMENT_LINK\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"    pm.environment.set(\"ID_PAYMENT_LINK\", responseBody.edges[0].node.id);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{TOKEN}}"
+									}
+								],
+								"url": {
+									"raw": "{{BASE_URL}}/v1/payment-link/list?startDate=2023-01-01&endDate=2024-01-01&startTime=00:00:00&endTime=23:59:59",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"v1",
+										"payment-link",
+										"list"
+									],
+									"query": [
+										{
+											"key": "startDate",
+											"value": "2023-01-01"
+										},
+										{
+											"key": "endDate",
+											"value": "2024-01-01"
+										},
+										{
+											"key": "startTime",
+											"value": "00:00:00"
+										},
+										{
+											"key": "endTime",
+											"value": "23:59:59"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Listagem de links de pagamentos - Cenário de Sucesso # Com queries",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Listagem de links de pagamentos - # Com queries - # Deve retornar object de paginação - pageInfo\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"    ",
+											"    pm.expect(responseBody).to.have.property('pageInfo');",
+											"    pm.expect(responseBody.pageInfo).to.be.an('object');",
+											"",
+											"    pm.expect(responseBody.pageInfo).to.have.property('totalPages');",
+											"    pm.expect(responseBody.pageInfo.totalPages).to.be.a('number');",
+											"",
+											"    pm.expect(responseBody.pageInfo).to.have.property('totalItems');",
+											"    pm.expect(responseBody.pageInfo.totalItems).to.be.a('number');",
+											"",
+											"    pm.expect(responseBody.pageInfo).to.have.property('itemsPerPage');",
+											"    pm.expect(responseBody.pageInfo.itemsPerPage).to.be.a('number');",
+											"    pm.expect(responseBody.pageInfo.itemsPerPage).to.be.eq(7);",
+											"",
+											"    pm.expect(responseBody.pageInfo).to.have.property('currentPage');",
+											"    pm.expect(responseBody.pageInfo.currentPage).to.be.a('number'); ",
+											"    pm.expect(responseBody.pageInfo.currentPage).to.be.eq(2);",
+											"",
+											"    pm.expect(responseBody.pageInfo).to.have.property('hasPreviousPage');",
+											"    pm.expect(responseBody.pageInfo.hasPreviousPage).to.be.a('boolean'); ",
+											"    pm.expect(responseBody.pageInfo.hasPreviousPage).to.be.eq(true); ",
+											"",
+											"    pm.expect(responseBody.pageInfo).to.have.property('hasNextPage');",
+											"    pm.expect(responseBody.pageInfo.hasNextPage).to.be.a('boolean'); ",
+											"});",
+											"",
+											"pm.test(\"Listagem de links de pagamentos - # Com query - # Deve retornar object de resultados - edges\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    pm.expect(responseBody).to.have.property('edges');",
+											"    pm.expect(responseBody.edges).to.be.an('array');",
+											"",
+											"    pm.expect(responseBody.edges[0]).to.have.property('cursor');",
+											"    pm.expect(responseBody.edges[0].cursor).to.be.a('string');",
+											"",
+											"    pm.expect(responseBody.edges[0]).to.have.property('node');",
+											"    pm.expect(responseBody.edges[0].node).to.be.an('object');",
+											"",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{TOKEN}}"
+									}
+								],
+								"url": {
+									"raw": "{{BASE_URL}}/v1/payment-link/list?page=2&limit=7&orderField=valueLiquid&orderOrientation=DESC&startDate=2023-01-01&endDate=2024-01-01&startTime=00:00:00&endTime=23:59:59",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"v1",
+										"payment-link",
+										"list"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "2"
+										},
+										{
+											"key": "limit",
+											"value": "7"
+										},
+										{
+											"key": "orderField",
+											"value": "valueLiquid",
+											"description": "Options: id | valueLiquid | expirationDate | createdAt"
+										},
+										{
+											"key": "orderOrientation",
+											"value": "DESC"
+										},
+										{
+											"key": "startDate",
+											"value": "2023-01-01"
+										},
+										{
+											"key": "endDate",
+											"value": "2024-01-01"
+										},
+										{
+											"key": "startTime",
+											"value": "00:00:00"
+										},
+										{
+											"key": "endTime",
+											"value": "23:59:59"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Listagem de links de pagamentos - Cenário de Falha #1",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Listagem de links de pagamentos - Cenário de Falha #1 - Dados inválidos\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    pm.expect(responseBody).to.have.property('message');",
+											"    pm.expect(responseBody.message).to.be.an('array');",
+											"",
+											"",
+											"    pm.expect(responseBody).to.have.property('statusCode');",
+											"    pm.expect(responseBody.statusCode).to.be.a('number');",
+											"    pm.expect(responseBody.statusCode).to.equal(400);",
+											"",
+											"    pm.expect(responseBody).to.have.property('path');",
+											"    pm.expect(responseBody.path).to.be.a('string');",
+											"});",
+											"",
+											"pm.test(\"Listagem de links de pagamentos - Cenário de Falha #1- Validador query da paginação\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    const expectedMessages = [",
+											"        \"Valor de orderOrientation inválido\",",
+											"        \"O campo orderOrientation é obrigatório quando o campo orderField é preenchido\"",
+											"    ];",
+											"",
+											"    pm.expect(responseBody.message).to.deep.include.members(expectedMessages);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Listagem de links de pagamentos - Cenário de Falha #3- Validador query da ordenação\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    const expectedMessages = [",
+											"        \"O valor máximo de registros por página deve igual a 25\",",
+											"        \"O valor mínimo de registros por página deve ser maior ou igual a 1\",",
+											"        \"O page deve ser um número inteiro\",",
+											"        \"O campo limit é obrigatório quando o campo page é preenchido\"",
+											"    ];",
+											" ",
+											"    pm.expect(responseBody.message).to.deep.include.members(expectedMessages);",
+											"});",
+											"",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{BASE_URL}}/v1/payment-link/list?orderField=id&page=1",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"v1",
+										"payment-link",
+										"list"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "10",
+											"disabled": true
+										},
+										{
+											"key": "orderField",
+											"value": "id"
+										},
+										{
+											"key": "orderOrientation",
+											"value": "ASC",
+											"disabled": true
+										},
+										{
+											"key": "page",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Exibir detalhes de um link de pagamentos",
+					"item": [
+						{
+							"name": "Exibir detalhes de um link de pagamento",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Exibir detalhes de um link de pagamento\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    pm.expect(responseBody).to.have.property('id');",
+											"    pm.expect(responseBody.id).to.be.an('string');",
+											"    ",
+											"    pm.expect(responseBody).to.have.property('status');",
+											"    pm.expect(responseBody.status).to.be.an('string');",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{BASE_URL}}/v1/payment-link/{{ID_PAYMENT_LINK}}",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"v1",
+										"payment-link",
+										"{{ID_PAYMENT_LINK}}"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "10",
+											"disabled": true
+										},
+										{
+											"key": "orderField",
+											"value": "paymentLink.id",
+											"disabled": true
+										},
+										{
+											"key": "orderOrientation",
+											"value": "ASC",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Exibir detalhes de um link de pagamentos - Cenário de Falha #1",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Exibir detalhes de um link de pagamentos - Cenário de Falha #1- Dados inválidos\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    pm.expect(responseBody).to.have.property('message');",
+											"    pm.expect(responseBody.message).to.be.an('array'); ",
+											"",
+											"    pm.expect(responseBody).to.have.property('statusCode');",
+											"    pm.expect(responseBody.statusCode).to.be.a('number');",
+											"    pm.expect(responseBody.statusCode).to.equal(400);",
+											"",
+											"    pm.expect(responseBody).to.have.property('path');",
+											"    pm.expect(responseBody.path).to.be.a('string');",
+											"});",
+											"",
+											"pm.test(\"Exibir detalhes de um link de pagamentos - Cenário de Falha #1- Validar mensagem\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    pm.expect(responseBody).to.have.property('message');",
+											"    pm.expect(responseBody.message).to.be.an('array');",
+											"    pm.expect(responseBody.message).to.contain(\"Informe o ID de link de pagamento válido\"); ",
+											"});",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{BASE_URL}}/v1/payment-link/dde7bba5-0819-wrong-9e33-31b8eefc2b84",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"v1",
+										"payment-link",
+										"dde7bba5-0819-wrong-9e33-31b8eefc2b84"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "10",
+											"disabled": true
+										},
+										{
+											"key": "orderField",
+											"value": "paymentLink.id",
+											"disabled": true
+										},
+										{
+											"key": "orderOrientation",
+											"value": "ASC",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Pedidos",
+			"item": [
+				{
+					"name": "Adiciona ou atualiza pedidos",
+					"item": [
+						{
+							"name": "Adiciona ou atualiza pedidos",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Adiciona ou atualiza pedidos\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{TOKEN}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n   \"orders\": [\n    {\n      \"orderIds\": [\n        \"1\",\n        \"2\",\n        \"3\",\n        \"4\",\n        \"5\"\n      ],\n      \"type\": \"RI\",\n      \"description\": \"Registro de imóveis\"\n    }\n  ],\n  \"idTypeAllocated\": \"affd9c43-236e-40b0-b7fb-5f3f238799c0\",\n  \"typeAllocated\": \"SALES\"\n}"
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/v1/order",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"v1",
+										"order"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Adiciona ou atualiza pedidos - Cenário de Falha #1",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Adiciona ou atualiza pedidos - Cenário de Falha #1 - Falta envio de campos\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    pm.expect(responseBody).to.have.property('message');",
+											"    pm.expect(responseBody.message).to.be.an('array');",
+											"",
+											"    pm.expect(responseBody).to.have.property('statusCode');",
+											"    pm.expect(responseBody.statusCode).to.be.a('number');",
+											"    pm.expect(responseBody.statusCode).to.equal(400);",
+											"",
+											"    pm.expect(responseBody).to.have.property('path');",
+											"    pm.expect(responseBody.path).to.be.a('string');",
+											"});",
+											"",
+											"pm.test(\"Adiciona ou atualiza pedidos - Cenário de Falha #1 - #Validando caso houver os dados gerais\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"    ",
+											"    const expectedMessages = [",
+											"        \"Informe UUID válido\",",
+											"        \"Informe ID do link de pagamento ou ID de uma venda\",",
+											"        \"Informe se é um link de pagamento `PAYMENTS` ou uma venda `SALES`\",",
+											"        \"Informe o typeAllocated\"",
+											"    ];",
+											"",
+											"    pm.expect(responseBody.message).to.deep.include.members(expectedMessages);",
+											"});",
+											"",
+											"pm.test(\"Adiciona ou atualiza pedidos - Cenário de Falha #1 - #Validando caso houver os dados pedidos \", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json(); ",
+											"",
+											"    pm.expect(responseBody.message).to.be.contain(\"orders.0.Cada elemento do array deve ser uma string.\");",
+											"    pm.expect(responseBody.message).to.be.contain(\"orders.0.Cada pedido no array deve ser único.\");",
+											"    pm.expect(responseBody.message).to.be.contain(\"orders.0.Tipo de pedido deve ser em formato de string\");",
+											"    pm.expect(responseBody.message).to.be.contain(\"orders.0.Descrição do pedido deve ser em formato de string\");    ",
+											"",
+											"    pm.expect(responseBody.message).to.be.contain(\"orders.1.Cada elemento do array deve ser uma string.\");",
+											"    pm.expect(responseBody.message).to.be.contain(\"orders.1.Cada pedido no array deve ser único.\");",
+											"    pm.expect(responseBody.message).to.be.contain(\"orders.1.Informe um ou mais de pedidos em formato de array\");",
+											"    pm.expect(responseBody.message).to.be.contain(\"orders.1.Tipo de pedido deve ser em formato de string\");",
+											"    pm.expect(responseBody.message).to.be.contain(\"orders.1.Descrição do pedido deve ser em formato de string\");",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"orders\": [\r\n        {\r\n            \"orderIds\": [\r\n                1,\r\n                \"2\",\r\n                \"2\"\r\n            ],\r\n            \"type\": 1,\r\n            \"description\": 1\r\n        },\r\n        {\r\n            \"orderIds\": 23,\r\n            \"type\": {\r\n                \"item\": \"texto genérico\"\r\n            },\r\n            \"description\": 1\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/v1/order",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"v1",
+										"order"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Adiciona ou atualiza pedidos - Cenário de Falha #2",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Adiciona ou atualiza pedidos - Cenário de Falha #1 - Falta envio de campos\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    pm.expect(responseBody).to.have.property('message');",
+											"    pm.expect(responseBody.message).to.be.an('array');",
+											"",
+											"    pm.expect(responseBody).to.have.property('statusCode');",
+											"    pm.expect(responseBody.statusCode).to.be.a('number');",
+											"    pm.expect(responseBody.statusCode).to.equal(400);",
+											"",
+											"    pm.expect(responseBody).to.have.property('path');",
+											"    pm.expect(responseBody.path).to.be.a('string');",
+											"});",
+											"",
+											"pm.test(\"Adiciona ou atualiza pedidos - Cenário de Falha #1 - #Validando caso houver os dados gerais\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    const expectedMessages = [",
+											"        \"Informe UUID válido\",",
+											"        \"Informe se é um link de pagamento `PAYMENTS` ou uma venda `SALES`\"",
+											"    ];",
+											"",
+											"    pm.expect(responseBody.message).to.deep.include.members(expectedMessages);",
+											"});",
+											"",
+											"pm.test(\"Adiciona ou atualiza pedidos - Cenário de Falha #1 - #Validando caso houver os dados pedidos \", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json(); ",
+											"",
+											"    pm.expect(responseBody.message).to.be.contain(\"orders.0.Cada elemento do array deve ser uma string.\");",
+											"    pm.expect(responseBody.message).to.be.contain(\"orders.0.Cada pedido no array deve ser único.\");",
+											"    pm.expect(responseBody.message).to.be.contain(\"orders.0.Tipo de pedido deve ser em formato de string\");",
+											"    pm.expect(responseBody.message).to.be.contain(\"orders.0.Descrição do pedido deve ser em formato de string\");    ",
+											"",
+											"    pm.expect(responseBody.message).to.be.contain(\"orders.1.Cada elemento do array deve ser uma string.\");",
+											"    pm.expect(responseBody.message).to.be.contain(\"orders.1.Cada pedido no array deve ser único.\");",
+											"    pm.expect(responseBody.message).to.be.contain(\"orders.1.Informe um ou mais de pedidos em formato de array\");",
+											"    pm.expect(responseBody.message).to.be.contain(\"orders.1.Tipo de pedido deve ser em formato de string\");",
+											"    pm.expect(responseBody.message).to.be.contain(\"orders.1.Descrição do pedido deve ser em formato de string\");",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"idTypeAllocated\": \"1\",\r\n    \"typeAllocated\": \"VENDA\",\r\n    \"orders\": [\r\n        {\r\n            \"orderIds\": [\r\n                1,\r\n                \"2\",\r\n                \"2\"\r\n            ],\r\n            \"type\": 1,\r\n            \"description\": 1\r\n        },\r\n        {\r\n            \"orderIds\": 23,\r\n            \"type\": {\r\n                \"item\": \"texto genérico\"\r\n            },\r\n            \"description\": 1\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/v1/order",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"v1",
+										"order"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Recebíveis",
+			"item": [
+				{
+					"name": "Relatório recebíveis do dia",
+					"item": [
+						{
+							"name": "Relatório recebíveis do dia",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Relatório recebíveis do dia\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    pm.expect(responseBody).to.have.property('cardReceivables');",
+											"    pm.expect(responseBody.cardReceivables).to.be.an('array');",
+											"",
+											"    responseBody.cardReceivables.forEach(function (receivable) {",
+											"        pm.expect(receivable).to.be.an('object');",
+											"",
+											"        pm.expect(receivable).to.have.property('creditValue');",
+											"        pm.expect(receivable.creditValue).to.be.a('string');",
+											"",
+											"        pm.expect(receivable).to.have.property('debitValue');",
+											"        pm.expect(receivable.debitValue).to.be.a('string');",
+											"",
+											"        pm.expect(receivable).to.have.property('brand');",
+											"        pm.expect(receivable.brand).to.be.a('string');",
+											"    });",
+											"",
+											"    pm.expect(responseBody).to.have.property('pixReceivables');",
+											"    pm.expect(responseBody.pixReceivables).to.be.a('string');",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{TOKEN}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/v1/receivable/date/2024/02/02",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"v1",
+										"receivable",
+										"date",
+										"2024",
+										"02",
+										"02"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Relatório recebíveis do dia  - Cenário de Falha #1",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Relatório recebíveis do dia - Cenário de Falha #1 - Parametros errados\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    pm.expect(responseBody).to.have.property('message');",
+											"    pm.expect(responseBody.message).to.be.an('array');",
+											"",
+											"    pm.expect(responseBody).to.have.property('statusCode');",
+											"    pm.expect(responseBody.statusCode).to.be.a('number');",
+											"    pm.expect(responseBody.statusCode).to.equal(400);",
+											"",
+											"    pm.expect(responseBody).to.have.property('path');",
+											"    pm.expect(responseBody.path).to.be.a('string');",
+											"});",
+											"",
+											"",
+											"pm.test(\"Relatório recebíveis do dia - Cenário de Falha #2 - Parametros errados\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    pm.expect(responseBody).to.have.property('message');",
+											"    pm.expect(responseBody.message).to.be.an('array');",
+											"",
+											"    const expectedMessages = [",
+											"        \"Mês deve ser igual ou inferior a 31\",",
+											"        \"Mês deve ser igual ou superior a 1\",",
+											"        \"O mês deve ser um número inteiro\",",
+											"        \"Mês deve ser igual ou inferior a 12\",",
+											"        \"Mês deve ser igual ou superior a 1\",",
+											"        \"O mês deve ser um número inteiro\",",
+											"        \"Ano não pode ser anterior ao ano atual\",",
+											"        \"O ano deve ser um número inteiro\"",
+											"    ];",
+											"",
+											"    pm.expect(responseBody.message).to.deep.include.members(expectedMessages);",
+											"",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/v1/receivable/date/ano/mes/dia-errado",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"v1",
+										"receivable",
+										"date",
+										"ano",
+										"mes",
+										"dia-errado"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Relatório recebíveis do mês",
+					"item": [
+						{
+							"name": "Relatório recebíveis do mês",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Relatório recebíveis do mês\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    responseBody.forEach(function (item) {",
+											"        pm.expect(item).to.be.an('object');",
+											"",
+											"        pm.expect(item).to.have.property('day');",
+											"        pm.expect(item.day).to.be.a('string');",
+											"",
+											"        pm.expect(item).to.have.property('value');",
+											"        pm.expect(item.value).to.be.a('string');",
+											"    });",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{TOKEN}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/v1/receivable/2024/02",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"v1",
+										"receivable",
+										"2024",
+										"02"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Relatório recebíveis do mês - Cenário de Falha #1",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Relatório recebíveis do mês - Cenário de Falha #1 - Falta envio de campos\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    pm.expect(responseBody).to.have.property('message');",
+											"    pm.expect(responseBody.message).to.be.an('array');",
+											"",
+											"    pm.expect(responseBody).to.have.property('statusCode');",
+											"    pm.expect(responseBody.statusCode).to.be.a('number');",
+											"    pm.expect(responseBody.statusCode).to.equal(400);",
+											"",
+											"    pm.expect(responseBody).to.have.property('path');",
+											"    pm.expect(responseBody.path).to.be.a('string');",
+											"});",
+											"",
+											"pm.test(\"Relatório recebíveis do mês - Cenário de Falha #1 - Falta envio de campos\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    pm.expect(responseBody).to.have.property('message');",
+											"    pm.expect(responseBody.message).to.be.an('array');",
+											"    const expectedMessages = [",
+											"        \"Mês deve ser igual ou inferior a 12\",",
+											"        \"Ano não pode ser anterior ao ano atual\"",
+											"    ];",
+											"",
+											"    pm.expect(responseBody.message).to.deep.include.members(expectedMessages);",
+											"",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/v1/receivable/2022/13",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"v1",
+										"receivable",
+										"2022",
+										"13"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Vendas",
+			"item": [
+				{
+					"name": "Listagem de vendas",
+					"item": [
+						{
+							"name": "Listagem de vendas - Cenário de Sucesso # Nenhuma query",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Listagem de vendas - Cenário de Sucesso - # Dados da páginação\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    pm.expect(responseBody).to.have.property('pageInfo');",
+											"    pm.expect(responseBody.pageInfo).to.be.an('object');",
+											"",
+											"    pm.expect(responseBody.pageInfo).to.have.property('totalPages');",
+											"    pm.expect(responseBody.pageInfo.totalPages).to.be.a('number');",
+											"",
+											"    pm.expect(responseBody.pageInfo).to.have.property('totalItems');",
+											"    pm.expect(responseBody.pageInfo.totalItems).to.be.a('number');",
+											"",
+											"    pm.expect(responseBody.pageInfo).to.have.property('itemsPerPage');",
+											"    pm.expect(responseBody.pageInfo.itemsPerPage).to.be.a('number');",
+											"",
+											"    pm.expect(responseBody.pageInfo).to.have.property('currentPage');",
+											"    pm.expect(responseBody.pageInfo.currentPage).to.be.a('number');",
+											"",
+											"    pm.expect(responseBody.pageInfo).to.have.property('hasPreviousPage');",
+											"    pm.expect(responseBody.pageInfo.hasPreviousPage).to.be.a('boolean');",
+											"",
+											"    pm.expect(responseBody.pageInfo).to.have.property('hasNextPage');",
+											"    pm.expect(responseBody.pageInfo.hasNextPage).to.be.a('boolean');",
+											"});",
+											"",
+											"pm.test(\"Listagem de vendas - Cenário de Sucesso - # Resultados\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"    ",
+											"    pm.expect(responseBody).to.have.property('edges');",
+											"    pm.expect(responseBody.edges).to.be.an('array');",
+											"",
+											"    responseBody.edges.forEach(function (edge) {",
+											"        pm.expect(edge).to.be.an('object');",
+											"",
+											"        pm.expect(edge).to.have.property('cursor');",
+											"        pm.expect(edge.cursor).to.be.a('string');",
+											"",
+											"        pm.expect(edge).to.have.property('node');",
+											"        pm.expect(edge.node).to.be.an('object');",
+											"",
+											"        pm.expect(edge.node).to.have.property('id');",
+											"        pm.expect(edge.node.id).to.be.a('string');",
+											"",
+											"        pm.expect(edge.node).to.have.property('dateOfSale');",
+											"        pm.expect(edge.node.dateOfSale).to.be.a('string');",
+											"",
+											"        pm.expect(edge.node).to.have.property('dateOfReceivables');",
+											"        pm.expect(edge.node.dateOfReceivables).to.be.a('string');",
+											"",
+											"        pm.expect(edge.node).to.have.property('valueLiquid');",
+											"        pm.expect(edge.node.valueLiquid).to.be.a('number');",
+											"",
+											"        pm.expect(edge.node).to.have.property('valueBrute');",
+											"        pm.expect(edge.node.valueBrute).to.be.a('number');",
+											"",
+											"        pm.expect(edge.node).to.have.property('brand');",
+											"        pm.expect(edge.node.brand).to.be.a('string');",
+											"",
+											"        pm.expect(edge.node).to.have.property('installment');",
+											"        pm.expect(edge.node.installment).to.be.a('number');",
+											"",
+											"        pm.expect(edge.node).to.have.property('typeOfPayment');",
+											"        pm.expect(edge.node.typeOfPayment).to.be.a('string');",
+											"",
+											"        pm.expect(edge.node).to.have.property('typeOfSale');",
+											"        pm.expect(edge.node.typeOfSale).to.be.a('string');",
+											"",
+											"        pm.expect(edge.node).to.have.property('cardNumber');",
+											"        pm.expect(edge.node.cardNumber).to.satisfy((cardNumber) => typeof cardNumber === 'string' || cardNumber === null);",
+											"",
+											"        pm.expect(edge.node).to.have.property('cardHolder');",
+											"        pm.expect(edge.node.cardHolder).to.satisfy((cardHolder) => typeof cardHolder === 'string' || cardHolder === null);",
+											"",
+											"        pm.expect(edge.node).to.have.property('status');",
+											"        pm.expect(edge.node.status).to.be.a('string');",
+											"",
+											"        pm.expect(edge.node).to.have.property('orders');",
+											"        pm.expect(edge.node.orders).to.satisfy((orders) => Array.isArray(orders) || orders === null);",
+											"     });",
+											"});",
+											"",
+											"pm.test(\"Listagem de vendas - Cenário de Sucesso - # Deve setar como variável de ambiente ID_PAYMENT_LINK\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"    pm.environment.set(\"ID_SALE\", responseBody.edges[0].node.id);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{TOKEN}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/v1/sale/list",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"v1",
+										"sale",
+										"list"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Listagem de vendas - Cenário de Sucesso # Com queries",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Listagem de vendas - Cenário de Sucesso - # Dados da páginação\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    pm.expect(responseBody).to.have.property('pageInfo');",
+											"    pm.expect(responseBody.pageInfo).to.be.an('object');",
+											"",
+											"    pm.expect(responseBody.pageInfo).to.have.property('totalPages');",
+											"    pm.expect(responseBody.pageInfo.totalPages).to.be.a('number');",
+											"",
+											"    pm.expect(responseBody.pageInfo).to.have.property('totalItems');",
+											"    pm.expect(responseBody.pageInfo.totalItems).to.be.a('number');",
+											"",
+											"    pm.expect(responseBody.pageInfo).to.have.property('itemsPerPage');",
+											"    pm.expect(responseBody.pageInfo.itemsPerPage).to.be.a('number');",
+											"",
+											"    pm.expect(responseBody.pageInfo).to.have.property('currentPage');",
+											"    pm.expect(responseBody.pageInfo.currentPage).to.be.a('number');",
+											"",
+											"    pm.expect(responseBody.pageInfo).to.have.property('hasPreviousPage');",
+											"    pm.expect(responseBody.pageInfo.hasPreviousPage).to.be.a('boolean');",
+											"",
+											"    pm.expect(responseBody.pageInfo).to.have.property('hasNextPage');",
+											"    pm.expect(responseBody.pageInfo.hasNextPage).to.be.a('boolean');",
+											"});",
+											"",
+											"pm.test(\"Listagem de vendas - Cenário de Sucesso - # Resultados\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"    ",
+											"    pm.expect(responseBody).to.have.property('edges');",
+											"    pm.expect(responseBody.edges).to.be.an('array');",
+											"",
+											"    responseBody.edges.forEach(function (edge) {",
+											"        pm.expect(edge).to.be.an('object');",
+											"",
+											"        pm.expect(edge).to.have.property('cursor');",
+											"        pm.expect(edge.cursor).to.be.a('string');",
+											"",
+											"        pm.expect(edge).to.have.property('node');",
+											"        pm.expect(edge.node).to.be.an('object');",
+											"",
+											"        pm.expect(edge.node).to.have.property('id');",
+											"        pm.expect(edge.node.id).to.be.a('string');",
+											"",
+											"        pm.expect(edge.node).to.have.property('dateOfSale');",
+											"        pm.expect(edge.node.dateOfSale).to.be.a('string');",
+											"",
+											"        pm.expect(edge.node).to.have.property('dateOfReceivables');",
+											"        pm.expect(edge.node.dateOfReceivables).to.be.a('string');",
+											"",
+											"        pm.expect(edge.node).to.have.property('valueLiquid');",
+											"        pm.expect(edge.node.valueLiquid).to.be.a('number');",
+											"",
+											"        pm.expect(edge.node).to.have.property('valueBrute');",
+											"        pm.expect(edge.node.valueBrute).to.be.a('number');",
+											"",
+											"        pm.expect(edge.node).to.have.property('brand');",
+											"        pm.expect(edge.node.brand).to.be.a('string');",
+											"",
+											"        pm.expect(edge.node).to.have.property('installment');",
+											"        pm.expect(edge.node.installment).to.be.a('number');",
+											"",
+											"        pm.expect(edge.node).to.have.property('typeOfPayment');",
+											"        pm.expect(edge.node.typeOfPayment).to.be.a('string');",
+											"",
+											"        pm.expect(edge.node).to.have.property('typeOfSale');",
+											"        pm.expect(edge.node.typeOfSale).to.be.a('string');",
+											"",
+											"        pm.expect(edge.node).to.have.property('cardNumber');",
+											"        pm.expect(edge.node.cardNumber).to.satisfy((cardNumber) => typeof cardNumber === 'string' || cardNumber === null);",
+											"",
+											"        pm.expect(edge.node).to.have.property('cardHolder');",
+											"        pm.expect(edge.node.cardHolder).to.satisfy((cardHolder) => typeof cardHolder === 'string' || cardHolder === null);",
+											"",
+											"        pm.expect(edge.node).to.have.property('status');",
+											"        pm.expect(edge.node.status).to.be.a('string');",
+											"",
+											"        pm.expect(edge.node).to.have.property('orders');",
+											"        pm.expect(edge.node.orders).to.satisfy((orders) => Array.isArray(orders) || orders === null);",
+											"     });",
+											"});",
+											"",
+											"pm.test(\"Listagem de vendas - Cenário de Sucesso - # Validação paginação\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    pm.expect(responseBody.pageInfo).to.have.property('itemsPerPage');",
+											"    pm.expect(responseBody.pageInfo.itemsPerPage).to.be.a('number');",
+											"    pm.expect(responseBody.pageInfo.itemsPerPage).to.be.eql(2)",
+											"",
+											"    pm.expect(responseBody.pageInfo).to.have.property('currentPage');",
+											"    pm.expect(responseBody.pageInfo.currentPage).to.be.a('number');",
+											"    pm.expect(responseBody.pageInfo.currentPage).to.be.eql(3);",
+											"});",
+											"",
+											"pm.test(\"Listagem de vendas - Cenário de Sucesso - # Validação ordenação\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    responseBody.edges.forEach(function (edge, index, array) {",
+											"",
+											"        pm.expect(edge).to.be.an('object');",
+											"",
+											"        pm.expect(edge).to.have.property('cursor');",
+											"        pm.expect(edge.cursor).to.be.a('string');",
+											"",
+											"        pm.expect(edge).to.have.property('node');",
+											"        pm.expect(edge.node).to.be.an('object');",
+											" ",
+											"        pm.expect(edge.node).to.have.property('valueLiquid');",
+											"        pm.expect(edge.node.valueLiquid).to.be.a('number');",
+											"",
+											"        if (index < array.length - 1) {",
+											"            const nextNode = array[index + 1].node;",
+											"            pm.expect(edge.node.valueLiquid).to.be.at.least(nextNode.valueLiquid);",
+											"        }",
+											"",
+											"     });",
+											"});",
+											"",
+											"pm.test(\"Listagem de vendas - Cenário de Sucesso - # Validação filtro 'status'\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    responseBody.edges.forEach(function (edge) {",
+											"",
+											"        pm.expect(edge).to.be.an('object');",
+											"",
+											"        pm.expect(edge).to.have.property('cursor');",
+											"        pm.expect(edge.cursor).to.be.a('string');",
+											"",
+											"        pm.expect(edge).to.have.property('node');",
+											"        pm.expect(edge.node).to.be.an('object');",
+											" ",
+											"        pm.expect(edge.node).to.have.property('status');",
+											"        pm.expect(edge.node.status).to.be.a('string');",
+											"",
+											"        pm.expect(edge.node.status).to.eql('ESTORNADA');",
+											"        ",
+											"     });",
+											"});",
+											"",
+											"pm.test(\"Listagem de vendas - Cenário de Sucesso - # Validação filtro pedido 'order'\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    responseBody.edges.forEach(function (edge) {",
+											"",
+											"        pm.expect(edge).to.be.an('object');",
+											"",
+											"        pm.expect(edge).to.have.property('cursor');",
+											"        pm.expect(edge.cursor).to.be.a('string');",
+											"",
+											"        pm.expect(edge).to.have.property('node');",
+											"        pm.expect(edge.node).to.be.an('object');",
+											" ",
+											"        pm.expect(edge.node).to.have.property('orders');",
+											"        pm.expect(edge.node.orders).to.satisfy((orders) => Array.isArray(orders) || orders === null);",
+											"",
+											"        if (edge.node.orders && Array.isArray(edge.node.orders)) {",
+											"            edge.node.orders.forEach(function (order) {",
+											"                pm.expect(order).to.have.property('orderIds');",
+											"                pm.expect(order.orderIds).to.be.an('array');",
+											"",
+											"                pm.expect(order.orderIds).to.satisfy((orderIds) => {",
+											"                    return orderIds.some(id => id.includes('Teste'));",
+											"                });",
+											"            });",
+											"        }",
+											"     });",
+											"});",
+											"",
+											"pm.test(\"Listagem de vendas - Cenário de Sucesso - # Validação filtro 'typeOfPayment'\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    responseBody.edges.forEach(function (edge) {",
+											"",
+											"        pm.expect(edge).to.be.an('object');",
+											"",
+											"        pm.expect(edge).to.have.property('cursor');",
+											"        pm.expect(edge.cursor).to.be.a('string');",
+											"",
+											"        pm.expect(edge).to.have.property('node');",
+											"        pm.expect(edge.node).to.be.an('object');",
+											" ",
+											"        pm.expect(edge.node).to.have.property('typeOfPayment');",
+											"        pm.expect(edge.node.typeOfPayment).to.be.a('string');",
+											"",
+											"        pm.expect(edge.node.typeOfPayment).to.eql('Crédito à Vista');",
+											"        ",
+											"     });",
+											"});",
+											"",
+											"pm.test(\"Listagem de vendas - Cenário de Sucesso - # Validação filtro 'typeOfSale'\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    responseBody.edges.forEach(function (edge) {",
+											"",
+											"        pm.expect(edge).to.be.an('object');",
+											"",
+											"        pm.expect(edge).to.have.property('cursor');",
+											"        pm.expect(edge.cursor).to.be.a('string');",
+											"",
+											"        pm.expect(edge).to.have.property('node');",
+											"        pm.expect(edge.node).to.be.an('object');",
+											" ",
+											"        pm.expect(edge.node).to.have.property('typeOfSale');",
+											"        pm.expect(edge.node.typeOfSale).to.be.a('string');",
+											"",
+											"        pm.expect(edge.node.typeOfSale).to.eql('POS');",
+											"        ",
+											"     });",
+											"});",
+											"",
+											"pm.test(\"Listagem de vendas - Cenário de Sucesso - # Validação filtro 'installment'\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    responseBody.edges.forEach(function (edge) {",
+											"",
+											"        pm.expect(edge).to.be.an('object');",
+											"",
+											"        pm.expect(edge).to.have.property('cursor');",
+											"        pm.expect(edge.cursor).to.be.a('string');",
+											"",
+											"        pm.expect(edge).to.have.property('node');",
+											"        pm.expect(edge.node).to.be.an('object');",
+											" ",
+											"        pm.expect(edge.node).to.have.property('installment');",
+											"        pm.expect(edge.node.installment).to.be.a('number');",
+											"",
+											"        pm.expect(edge.node.installment).to.eql(1);",
+											"        ",
+											"     });",
+											"});",
+											"",
+											"pm.test(\"Listagem de vendas - Cenário de Sucesso - # Validação filtro 'minValueLiquid'\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    responseBody.edges.forEach(function (edge) {",
+											"",
+											"        pm.expect(edge).to.be.an('object');",
+											"",
+											"        pm.expect(edge).to.have.property('cursor');",
+											"        pm.expect(edge.cursor).to.be.a('string');",
+											"",
+											"        pm.expect(edge).to.have.property('node');",
+											"        pm.expect(edge.node).to.be.an('object');",
+											" ",
+											"        pm.expect(edge.node).to.have.property('valueLiquid');",
+											"        pm.expect(edge.node.valueLiquid).to.be.a('number');",
+											"",
+											"        pm.expect(edge.node.valueLiquid).to.gte(1.00);",
+											"        ",
+											"     });",
+											"});",
+											"",
+											"pm.test(\"Listagem de vendas - Cenário de Sucesso - # Validação filtro 'maxValueLiquid'\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    responseBody.edges.forEach(function (edge) {",
+											"",
+											"        pm.expect(edge).to.be.an('object');",
+											"",
+											"        pm.expect(edge).to.have.property('cursor');",
+											"        pm.expect(edge.cursor).to.be.a('string');",
+											"",
+											"        pm.expect(edge).to.have.property('node');",
+											"        pm.expect(edge.node).to.be.an('object');",
+											" ",
+											"        pm.expect(edge.node).to.have.property('valueLiquid');",
+											"        pm.expect(edge.node.valueLiquid).to.be.a('number');",
+											"",
+											"        pm.expect(edge.node.valueLiquid).to.lte(12.00);",
+											"        ",
+											"     });",
+											"});",
+											"",
+											"pm.test(\"Listagem de vendas - Cenário de Sucesso - # Validação filtro 'minValueBrute'\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    responseBody.edges.forEach(function (edge) {",
+											"",
+											"        pm.expect(edge).to.be.an('object');",
+											"",
+											"        pm.expect(edge).to.have.property('cursor');",
+											"        pm.expect(edge.cursor).to.be.a('string');",
+											"",
+											"        pm.expect(edge).to.have.property('node');",
+											"        pm.expect(edge.node).to.be.an('object');",
+											" ",
+											"        pm.expect(edge.node).to.have.property('valueBrute');",
+											"        pm.expect(edge.node.valueBrute).to.be.a('number');",
+											"",
+											"        pm.expect(edge.node.valueBrute).to.gte(10.00);",
+											"        ",
+											"     });",
+											"});",
+											"",
+											"pm.test(\"Listagem de vendas - Cenário de Sucesso - # Validação filtro 'maxValueBrute'\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    responseBody.edges.forEach(function (edge) {",
+											"",
+											"        pm.expect(edge).to.be.an('object');",
+											"",
+											"        pm.expect(edge).to.have.property('cursor');",
+											"        pm.expect(edge.cursor).to.be.a('string');",
+											"",
+											"        pm.expect(edge).to.have.property('node');",
+											"        pm.expect(edge.node).to.be.an('object');",
+											" ",
+											"        pm.expect(edge.node).to.have.property('valueBrute');",
+											"        pm.expect(edge.node.valueBrute).to.be.a('number');",
+											"",
+											"        pm.expect(edge.node.valueBrute).to.lte(12.00);",
+											"        ",
+											"     });",
+											"});",
+											"",
+											"pm.test(\"Listagem de vendas - Cenário de Sucesso - # Validação filtro 'brand'\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    responseBody.edges.forEach(function (edge) {",
+											"",
+											"        pm.expect(edge).to.be.an('object');",
+											"",
+											"        pm.expect(edge).to.have.property('cursor');",
+											"        pm.expect(edge.cursor).to.be.a('string');",
+											"",
+											"        pm.expect(edge).to.have.property('node');",
+											"        pm.expect(edge.node).to.be.an('object');",
+											" ",
+											"        pm.expect(edge.node).to.have.property('brand');",
+											"        pm.expect(edge.node.brand).to.be.a('string');",
+											"",
+											"        pm.expect(edge.node.brand).to.eql('MASTERCARD');",
+											"        ",
+											"     });",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{TOKEN}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/v1/sale/list?limit=2&page=3&orderField=valueLiquid&orderOrientation=DESC&status=ESTORNADA&order=Teste&typeOfPayment=Crédito à Vista&typeOfSale=POS&installment=1&minValueLiquid=100&maxValueLiquid=1200&minValueBrute=100&maxValueBrute=1200&brand=MASTERCARD&startDate=2023-04-05&endDate=2023-04-30",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"v1",
+										"sale",
+										"list"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "2"
+										},
+										{
+											"key": "page",
+											"value": "3"
+										},
+										{
+											"key": "orderField",
+											"value": "valueLiquid"
+										},
+										{
+											"key": "orderOrientation",
+											"value": "DESC"
+										},
+										{
+											"key": "status",
+											"value": "ESTORNADA"
+										},
+										{
+											"key": "order",
+											"value": "Teste"
+										},
+										{
+											"key": "typeOfPayment",
+											"value": "Crédito à Vista"
+										},
+										{
+											"key": "typeOfSale",
+											"value": "POS"
+										},
+										{
+											"key": "installment",
+											"value": "1"
+										},
+										{
+											"key": "minValueLiquid",
+											"value": "100"
+										},
+										{
+											"key": "maxValueLiquid",
+											"value": "1200"
+										},
+										{
+											"key": "minValueBrute",
+											"value": "100"
+										},
+										{
+											"key": "maxValueBrute",
+											"value": "1200"
+										},
+										{
+											"key": "brand",
+											"value": "MASTERCARD"
+										},
+										{
+											"key": "startDate",
+											"value": "2023-04-05"
+										},
+										{
+											"key": "endDate",
+											"value": "2023-04-30"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Listagem de vendas - Cenário de Falha #1",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(",
+											"  \"Listagem de vendas- Cenário de Falha #1 - Estrutura básica\",",
+											"  function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    pm.expect(responseBody).to.have.property(\"message\");",
+											"    pm.expect(responseBody.message).to.be.an(\"array\");",
+											"",
+											"    pm.expect(responseBody).to.have.property(\"statusCode\");",
+											"    pm.expect(responseBody.statusCode).to.be.a(\"number\");",
+											"    pm.expect(responseBody.statusCode).to.eql(400);",
+											"",
+											"    pm.expect(responseBody).to.have.property(\"path\");",
+											"    pm.expect(responseBody.path).to.be.a(\"string\");",
+											"  }",
+											");",
+											"",
+											"pm.test(",
+											"  \"Listagem de vendas - Cenário de Falha #2 - Estrutura com falha - paginação\",",
+											"  function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    const expectedMessages = [",
+											"      \"O valor máximo de registros por página deve igual a 25\",",
+											"      \"O valor mínimo de registros por página deve ser maior ou igual a 1\",",
+											"      \"O page deve ser um número inteiro\",",
+											"      \"O campo limit é obrigatório quando o campo page é preenchido\",",
+											"    ];",
+											"",
+											"    pm.expect(responseBody.message).to.deep.include.members(expectedMessages);",
+											"  }",
+											");",
+											"",
+											"pm.test(",
+											"  \"Listagem de vendas - Cenário de Falha #3 - Estrutura com falha - ordenação\",",
+											"  function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    const expectedMessages = [",
+											"      \"Valor de orderField inválido\",",
+											"      \"Valor de orderOrientation inválido\",",
+											"    ];",
+											"",
+											"    pm.expect(responseBody.message).to.deep.include.members(expectedMessages);",
+											"  }",
+											");",
+											"",
+											"pm.test(",
+											"  \"Listagem de vendas - Cenário de Falha #4 - Estrutura com falha - status\",",
+											"  function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    const expectedMessages = [\"Status deve ser um dos valores válidos\"];",
+											"",
+											"    pm.expect(responseBody.message).to.deep.include.members(expectedMessages);",
+											"  }",
+											");",
+											"",
+											"pm.test(",
+											"  \"Listagem de vendas - Cenário de Falha #5 - Estrutura com falha - typeOfPayment\",",
+											"  function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    const expectedMessages = [",
+											"      \"Tipo de pagamento deve ser um dos valores válidos\",",
+											"    ];",
+											"",
+											"    pm.expect(responseBody.message).to.deep.include.members(expectedMessages);",
+											"  }",
+											");",
+											"",
+											"pm.test(",
+											"  \"Listagem de vendas - Cenário de Falha #6 - Estrutura com falha - typeOfSale\",",
+											"  function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    const expectedMessages = [\"Tipo de venda deve ser um dos valores válidos\"];",
+											"",
+											"    pm.expect(responseBody.message).to.deep.include.members(expectedMessages);",
+											"  }",
+											");",
+											"",
+											"pm.test(",
+											"  \"Listagem de vendas - Cenário de Falha #7 - Estrutura com falha - installment\",",
+											"  function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    const expectedMessages = [\"Número de parcelas deve ser um número\"];",
+											"",
+											"    pm.expect(responseBody.message).to.deep.include.members(expectedMessages);",
+											"  }",
+											");",
+											"",
+											"pm.test(",
+											"  \"Listagem de vendas - Cenário de Falha #8 - Estrutura com falha - minValueLiquid\",",
+											"  function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    const expectedMessages = [",
+											"      \"Valor mínimo líquido em centavos deve ser um número\",",
+											"    ];",
+											"",
+											"    pm.expect(responseBody.message).to.deep.include.members(expectedMessages);",
+											"  }",
+											");",
+											"",
+											"pm.test(",
+											"  \"Listagem de vendas - Cenário de Falha #9 - Estrutura com falha - maxValueLiquid\",",
+											"  function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    const expectedMessages = [",
+											"      \"Valor máximo líquido em centavos deve ser um número\",",
+											"    ];",
+											"",
+											"    pm.expect(responseBody.message).to.deep.include.members(expectedMessages);",
+											"  }",
+											");",
+											"",
+											"pm.test(",
+											"  \"Listagem de vendas - Cenário de Falha #10 - Estrutura com falha - minValueBrute\",",
+											"  function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    const expectedMessages = [\"Valor mínimo bruto deve ser um número\"];",
+											"",
+											"    pm.expect(responseBody.message).to.deep.include.members(expectedMessages);",
+											"  }",
+											");",
+											"",
+											"pm.test(",
+											"  \"Listagem de vendas - Cenário de Falha #11 - Estrutura com falha - maxValueBrute\",",
+											"  function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    const expectedMessages = [\"Valor máximo bruto deve ser um número\"];",
+											"",
+											"    pm.expect(responseBody.message).to.deep.include.members(expectedMessages);",
+											"  }",
+											");",
+											"",
+											"pm.test(",
+											"  \"Listagem de vendas - Cenário de Falha #12 - Estrutura com falha - brand\",",
+											"  function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    const expectedMessages = [\"Bandeira deve ser uma das bandeiras válidas\"];",
+											"",
+											"    pm.expect(responseBody.message).to.deep.include.members(expectedMessages);",
+											"  }",
+											");",
+											"",
+											"pm.test(",
+											"  \"Listagem de vendas - Cenário de Falha #13 - Estrutura com falha - startDate\",",
+											"  function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    const expectedMessages = [\"Data de ínício. Use o formato `2024-12-20`.\"];",
+											"",
+											"    pm.expect(responseBody.message).to.deep.include.members(expectedMessages);",
+											"  }",
+											");",
+											"",
+											"pm.test(",
+											"  \"Listagem de vendas - Cenário de Falha #14 - Estrutura com falha - endDate\",",
+											"  function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    const expectedMessages = [\"Data de término. Use o formato `2024-12-20`.\"];",
+											"",
+											"    pm.expect(responseBody.message).to.deep.include.members(expectedMessages);",
+											"  }",
+											");",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{TOKEN}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/v1/sale/list?limit=dois&page=9&orderField=campoEspecial&orderOrientation=CRESCENTE&status=CONFIDENCIAL&order=Teste&typeOfPayment=CREdito à Vista&typeOfSale=Maquininha&installment=dois&minValueLiquid=1k&maxValueLiquid=120k&minValueBrute=10l&maxValueBrute=10k&brand=NILOT&startDate=2023-99-12&endDate=2023-99-12",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"v1",
+										"sale",
+										"list"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "dois"
+										},
+										{
+											"key": "page",
+											"value": "9"
+										},
+										{
+											"key": "orderField",
+											"value": "campoEspecial"
+										},
+										{
+											"key": "orderOrientation",
+											"value": "CRESCENTE"
+										},
+										{
+											"key": "status",
+											"value": "CONFIDENCIAL"
+										},
+										{
+											"key": "order",
+											"value": "Teste"
+										},
+										{
+											"key": "typeOfPayment",
+											"value": "CREdito à Vista"
+										},
+										{
+											"key": "typeOfSale",
+											"value": "Maquininha"
+										},
+										{
+											"key": "installment",
+											"value": "dois"
+										},
+										{
+											"key": "minValueLiquid",
+											"value": "1k"
+										},
+										{
+											"key": "maxValueLiquid",
+											"value": "120k"
+										},
+										{
+											"key": "minValueBrute",
+											"value": "10l"
+										},
+										{
+											"key": "maxValueBrute",
+											"value": "10k"
+										},
+										{
+											"key": "brand",
+											"value": "NILOT"
+										},
+										{
+											"key": "startDate",
+											"value": "2023-99-12"
+										},
+										{
+											"key": "endDate",
+											"value": "2023-99-12"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Exibir detalhes de uma venda",
+					"item": [
+						{
+							"name": "Exibir detalhes de uma venda",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Exibir detalhes de uma venda - Verifica se a data da venda está presente e é uma string no formato ISO\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    pm.expect(responseBody).to.have.property('dateOfSale');",
+											"    pm.expect(responseBody.dateOfSale).to.be.a('string');",
+											"    pm.expect(new Date(responseBody.dateOfSale)).to.be.a('Date');",
+											"});",
+											"",
+											"pm.test(\"Exibir detalhes de uma venda - Verifica se o valor bruto da venda está presente e é um número\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    pm.expect(responseBody).to.have.property('valueBrute');",
+											"    pm.expect(responseBody.valueBrute).to.be.a('number');",
+											"});",
+											"",
+											"pm.test(\"Exibir detalhes de uma venda - Verifica se o valor líquido da venda está presente e é um número\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    pm.expect(responseBody).to.have.property('valueLiquid');",
+											"    pm.expect(responseBody.valueLiquid).to.be.a('number');",
+											"});",
+											"",
+											"pm.test(\"Exibir detalhes de uma venda - Verifica se o status da venda está presente e é uma string\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    pm.expect(responseBody).to.have.property('status');",
+											"    pm.expect(responseBody.status).to.be.a('string');",
+											"});",
+											"",
+											"pm.test(\"Exibir detalhes de uma venda - Verifica se o tipo de pagamento está presente e é uma string\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    pm.expect(responseBody).to.have.property('typeOfPayment');",
+											"    pm.expect(responseBody.typeOfPayment).to.be.a('string');",
+											"});",
+											"",
+											"pm.test(\"Exibir detalhes de uma venda - Verifica se o número de parcelas está presente e é um número\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    pm.expect(responseBody).to.have.property('installment');",
+											"    pm.expect(responseBody.installment).to.be.a('number');",
+											"});",
+											"",
+											"pm.test(\"Exibir detalhes de uma venda - Verifica se o tipo de venda está presente e é uma string\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    pm.expect(responseBody).to.have.property('typeOfSale');",
+											"    pm.expect(responseBody.typeOfSale).to.be.a('string');",
+											"});",
+											"",
+											"pm.test(\"Exibir detalhes de uma venda - Verifica se o número do cartão está presente e é uma string\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    pm.expect(responseBody).to.have.property('cardNumber');",
+											"    pm.expect(responseBody.cardNumber).to.be.a('string');",
+											"});",
+											"",
+											"pm.test(\"Exibir detalhes de uma venda - Verifica se a marca do cartão está presente e é uma string\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    pm.expect(responseBody).to.have.property('brand');",
+											"    pm.expect(responseBody.brand).to.be.a('string');",
+											"});",
+											"",
+											"",
+											"pm.test(\"Exibir detalhes de uma venda - Verifica se o estabelecimento está presente e tem uma propriedade 'name' que é uma string\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    pm.expect(responseBody).to.have.property('establishment');",
+											"    pm.expect(responseBody.establishment).to.be.an('object');",
+											"    pm.expect(responseBody.establishment).to.have.property('name').that.is.a('string');",
+											"});",
+											"",
+											"pm.test(\"Exibir detalhes de uma venda - Verifica se a taxa de transação está presente e é uma string\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    pm.expect(responseBody).to.have.property('feeTr');",
+											"    pm.expect(responseBody.feeTr).to.be.a('string');",
+											"});",
+											"",
+											"pm.test(\"Exibir detalhes de uma venda - Verifica se outros campos estão presentes\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    pm.expect(responseBody).to.have.property('debtorName');",
+											"    pm.expect(responseBody).to.have.property('debtorTaxId');",
+											"    pm.expect(responseBody).to.have.property('debtorBankName');",
+											"    pm.expect(responseBody).to.have.property('endToEndId');",
+											"    pm.expect(responseBody).to.have.property('cardHolder');",
+											"    pm.expect(responseBody).to.have.property('orders').that.is.an('array');",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{TOKEN}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/v1/sale/{{ID_SALE}}",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"v1",
+										"sale",
+										"{{ID_SALE}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Exibir detalhes de uma venda - Cenário de Falha #1",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Exibir detalhes de uma venda - Cenário de Falha #1 - Falta envio de campos\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    pm.expect(responseBody).to.have.property('message');",
+											"    pm.expect(responseBody.message).to.be.an('array');",
+											"",
+											"    pm.expect(responseBody).to.have.property('statusCode');",
+											"    pm.expect(responseBody.statusCode).to.be.a('number');",
+											"    pm.expect(responseBody.statusCode).to.eql(400);",
+											"",
+											"    pm.expect(responseBody).to.have.property('path');",
+											"    pm.expect(responseBody.path).to.be.a('string');",
+											"});",
+											"",
+											"pm.test(\"Exibir detalhes de uma venda - Cenário de Falha #1 - Envio de dados errados\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"",
+											"    const expectedMessages = [",
+											"        \"Informe o ID da venda em formato UUID\"",
+											"    ];",
+											" ",
+											"    pm.expect(responseBody.message).to.deep.include.members(expectedMessages);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/v1/sale/asmflasmf-ID-inválido",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"v1",
+										"sale",
+										"asmflasmf-ID-inválido"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Cobranças Avulsas",
+			"item": [
+				{
+					"name": "Geração de Boleto Bancário e PIX QR Code (Bolepix)",
+					"item": [
+						{
+							"name": "Geração de Boleto Bancário e PIX QR Code (Bolepix)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pagamento com Boleto Bancário e PIX QR Code - Cenário de Sucesso\", function () {",
+											"    pm.response.to.be.json;",
+											"    const responseBody = pm.response.json();",
+											"    ",
+											"    pm.expect(responseBody).to.have.property('paymentLink');",
+											"    const paymentLink = responseBody.paymentLink;",
+											"",
+											"    pm.expect(paymentLink).to.have.property('idPayment');",
+											"    pm.expect(paymentLink.idPayment).to.be.a('string');",
+											"",
+											"    pm.expect(paymentLink).to.have.property('paymentLinkId');",
+											"    pm.expect(paymentLink.paymentLinkId).to.be.a('string');",
+											"",
+											"    pm.expect(paymentLink).to.have.property('valueLiquid');",
+											"    pm.expect(paymentLink.valueLiquid).to.be.a('number');",
+											"",
+											"    pm.expect(paymentLink).to.have.property('expirationDate');",
+											"    pm.expect(paymentLink.expirationDate).to.be.a('string');",
+											"",
+											"    pm.expect(paymentLink).to.have.property('paymentUrl');",
+											"    pm.expect(paymentLink.paymentUrl).to.be.a('string');",
+											"",
+											"    pm.expect(paymentLink).to.have.property('status');",
+											"    pm.expect(paymentLink.status).to.be.a('string');",
+											"",
+											"    pm.expect(paymentLink).to.have.property('dateTimePtBr');",
+											"    pm.expect(paymentLink.dateTimePtBr).to.be.a('string');",
+											"",
+											"    pm.expect(responseBody).to.have.property('payment');",
+											"    const payment = responseBody.payment;",
+											"",
+											"    pm.expect(payment).to.have.property('debtor');",
+											"    const debtor = payment.debtor;",
+											"",
+											"    pm.expect(debtor).to.have.property('postalCode');",
+											"    pm.expect(debtor.postalCode).to.be.a('string');",
+											"",
+											"    // Continue as validações para as propriedades restantes do objeto 'debtor'",
+											"",
+											"    pm.expect(payment).to.have.property('receiver');",
+											"    const receiver = payment.receiver;",
+											"",
+											"    pm.expect(receiver).to.have.property('account');",
+											"    pm.expect(receiver.account).to.be.a('string');",
+											"",
+											"    // Continue as validações para as propriedades restantes do objeto 'receiver'",
+											"",
+											"    pm.expect(payment).to.have.property('pix');",
+											"    const pix = payment.pix;",
+											"",
+											"    pm.expect(pix).to.have.property('transactionId');",
+											"    pm.expect(pix.transactionId).to.be.a('string');",
+											"",
+											"    // Continue as validações para as propriedades restantes do objeto 'pix'",
+											"",
+											"    pm.expect(payment).to.have.property('boleto');",
+											"    const boleto = payment.boleto;",
+											"",
+											"    pm.expect(boleto).to.have.property('transactionId');",
+											"    pm.expect(boleto.transactionId).to.be.a('string');",
+											"",
+											"    // Continue as validações para as propriedades restantes do objeto 'boleto'",
+											"",
+											"    pm.expect(responseBody).to.have.property('status');",
+											"    pm.expect(responseBody.status).to.be.a('string');",
+											"",
+											"    pm.expect(responseBody).to.have.property('message');",
+											"    pm.expect(responseBody.message).to.be.a('string');",
+											"",
+											"    pm.expect(responseBody).to.have.property('errors');",
+											"    pm.expect(responseBody.errors).to.be.an('array');",
+											"    pm.expect(responseBody.errors).to.have.lengthOf(0); // Garante que não haja erros",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{TOKEN}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"customer\": {\n    \"name\": \"Danilo Ramon\",\n    \"email\": \"danilo+1@cartco1.com.br\",\n    \"document\": \"82343607010\",\n    \"ip\": \"192.168.0.1\",\n    \"address\": {\n      \"street\": \"Rua Aimbere\",\n      \"number\": \"300\",\n      \"complement\": \"APT 3\",\n      \"neighborhood\": \"Vila Curuça\",\n      \"city\": \"Santo André\",\n      \"state\": \"SP\",\n      \"postalCode\": \"09291210\"\n    }\n  },\n  \"payment\": {\n    \"dueDate\": \"2024-12-01\",\n    \"valueLiquid\": 5294,\n    \"orders\": [\n      { \n        \"orderIds\": [ \"001\"],\n        \"description\": \"BOLETO DE TESTE\",\n        \"type\": \"PROTOCOLO\" \n      }\n    ],\n    \"showDocument\": true,\n    \"showPixOnPDF\": true,\n    \"showImagesBase64\": true\n  }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/v1/payment-link/add-payment-boleto-pix",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"v1",
+										"payment-link",
+										"add-payment-boleto-pix"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Pagamento com cartão de crédito",
+					"item": [
+						{
+							"name": "Pagamento com cartão de crédito",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pagamento com Boleto Bancário e PIX QR Code - Cenário de Sucesso\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{TOKEN}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"customer\": {\n    \"name\": \"John Smith\",\n    \"email\": \"john.smith039403994@gmail.com\",\n    \"ip\": \"156.179.195.252\"\n  },\n  \"payment\": {\n    \"idPaymentLink\": \"{{ID_PAYMENT_LINK}}\",\n    \"paymentMethod\": \"CREDIT_CARD\",\n    \"installment\": 12,\n    \"installmentType\": \"INTEREST\"\n  },\n  \"cardInfo\": {\n    \"number\": \"5425476421229756\",\n    \"holderName\": \"JOHN A SMITH\",\n    \"holderDocument\": \"142.239.190-67\",\n    \"month\": 12,\n    \"year\": 2032,\n    \"cvv\": \"323\"\n  }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/v1/payment/credit-card/pay",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"v1",
+										"payment",
+										"credit-card",
+										"pay"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}

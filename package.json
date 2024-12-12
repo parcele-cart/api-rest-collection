@@ -1,0 +1,15 @@
+{
+  "name": "api-rest-collection",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postman:sandbox": "newman run collection.json -e sandbox.postman_environment.json"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "newman": "^6.0.0"
+  }
+}
