@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postman:sandbox": "newman run collection.json -e sandbox.postman_environment.json"
+    "postman:sandbox": "newman run collection.json -e sandbox.postman_environment.json",
+    "postman:local": "newman run collection.json -e local.postman_environment.json"
   },
   "author": "",
   "license": "ISC",

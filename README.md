@@ -33,6 +33,34 @@ Você pode executar os testes para um ambiente específico utilizando os seguint
 ```bash
 npm run postman:sandbox
 ```
+
+## Cobertura do contrato documentado
+
+A collection cobre **16/16 endpoints documentados** em https://parcelecart.readme.io (38 requests, incluindo cenários de falha que validam as mensagens de erro):
+
+- Autenticação: `POST /v1/auth/login`, `POST /v1/auth/refresh-token`
+- Link de Pagamentos: `POST /v1/payment-link`, `GET /v1/payment-link/list`, `GET /v1/payment-link/:id`, `GET /v1/payment-link/receipt-pdf/:id`, `POST /v1/payment-link/cancel/:id`, `POST /v1/payment-link/add-payment-boleto-pix`
+- Cobranças Avulsas: `POST /v1/payment/credit-card/pay`, `POST /v1/payment/pix-qrcode/generate`
+- Simulador: `POST /v1/simulator/consult-payment-fees`
+- Pedidos: `POST /v1/order`
+- Vendas: `GET /v1/sale/list`, `GET /v1/sale/:id`
+- Recebíveis: `GET /v1/receivable/date/:year/:month/:day`, `GET /v1/receivable/:year/:month`
+
+> Rotas existentes na API mas **não documentadas** no readme.io (fora da cobertura): `/webhook/*` (7), `/api-log/*` (2), `/sale/export-xlsx`, `/receivable/export-xlsx`, `/v2/simulator/consult-payment-fees`, `/v1/payment/charge/document/:id`, `/v1/payment-link/expire-payment-links`.
+
+## Validação de paridade (migração rest-api → saturno-api)
+
+O diretório `parity/` roda a **mesma collection** contra o proxy atual (baseline) e contra a saturno-api migrada (candidate) e compara request a request: status code, cada assertion e o corpo normalizado (ignorando campos voláteis como tokens, URLs de arquivo e datas).
+
+```bash
+BASELINE_URL=https://api-sandbox.parcelecart.com.br \
+CANDIDATE_URL=http://localhost:8080 \
+CLIENT_ID=xxx CLIENT_SECRET=yyy \
+./parity/run-parity.sh
+```
+
+O relatório aponta qualquer divergência nomeada por request. Saída `✅ PARIDADE TOTAL` é o gate para o cutover do Cloudflare.
+
 ## Contribuição
 
 Sinta-se à vontade para contribuir com melhorias, correções ou novos recursos. Basta seguir estes passos:
